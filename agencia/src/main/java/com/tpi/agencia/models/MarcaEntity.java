@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter @Setter @NoArgsConstructor @ToString
@@ -22,4 +23,22 @@ public class MarcaEntity {
 
     @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
     private Set<ModeloEntity> modelos = new HashSet<>();
+
+    public MarcaEntity(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MarcaEntity that = (MarcaEntity) o;
+        return Objects.equals(nombre, that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(nombre);
+    }
 }

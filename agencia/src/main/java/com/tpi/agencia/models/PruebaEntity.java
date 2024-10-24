@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor @ToString
 @Entity
@@ -37,5 +38,26 @@ public class PruebaEntity {
 
     private String comentarios;
 
+    public PruebaEntity(Integer id, VehiculoEntity vehiculo, EmpleadoEntity empleado, InteresadoEntity interesado, Date fechaHoraInicio, Date fechaHoraFin, String comentarios) {
+        this.id = id;
+        this.vehiculo = vehiculo;
+        this.empleado = empleado;
+        this.interesado = interesado;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
+        this.comentarios = comentarios;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PruebaEntity that = (PruebaEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
