@@ -11,8 +11,8 @@
 	<groupId>com.tpi</groupId>
 	<artifactId>agencia</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>APIagencia</name>
-	<description>API Gateway en SpringBoot para el proyecto integrador de Backend</description>
+	<name>API Agencia</name>
+	<description>Servicio de Agencia en SpringBoot para el proyecto integrador de Backend.</description>
 	<url/>
 	<licenses>
 		<license/>

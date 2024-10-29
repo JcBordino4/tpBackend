@@ -11,8 +11,8 @@
 	<groupId>com.tpi</groupId>
 	<artifactId>notificaciones</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>APInotificaciones</name>
-	<description>API Gateway en SpringBoot para el proyecto integrador de Backend</description>
+	<name>API Notificaciones</name>
+	<description>Servicio de Notificaciones en SpringBoot para el proyecto integrador de Backend</description>
 	<url/>
 	<licenses>
 		<license/>
