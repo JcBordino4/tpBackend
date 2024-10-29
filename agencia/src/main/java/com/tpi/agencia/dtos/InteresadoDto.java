@@ -1,7 +1,10 @@
 package com.tpi.agencia.dtos;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class InteresadoDto {
     private Integer id;
     private String tipoDocumento;

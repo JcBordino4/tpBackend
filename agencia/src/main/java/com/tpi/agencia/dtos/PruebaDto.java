@@ -6,9 +6,9 @@ import java.util.Date;
 
 @Data
 public class PruebaDto {
-    private VehiculoDto vehiculo;
-    private EmpleadoDto empleado;
-    private InteresadoDto interesado;
+    private Integer idVehiculo;
+    private Integer idEmpleado;
+    private Integer IdInteresado;
     private Date fechaHoraInicio;
     private Date fechaHoraFin;
     private String comentarios;
