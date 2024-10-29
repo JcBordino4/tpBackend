@@ -5,7 +5,8 @@ import com.tpi.agencia.repositories.PruebaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+
 
 @Service
 public class PruebaService {
@@ -20,8 +21,10 @@ public class PruebaService {
         return repository.save(prueba);
     }
 
-    public Optional<PruebaEntity> findById(Integer id) {
-        return repository.findById(id);
+    public PruebaEntity findById(Integer id) throws ServiceException {
+        return repository.findById(id).orElseThrow(() ->
+            new ServiceException("Prueba no encontrada")
+        );
     }
 
     public Iterable<PruebaEntity> findAll() {

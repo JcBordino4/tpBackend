@@ -2,16 +2,14 @@ package com.tpi.agencia.models;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor @ToString
 @Entity
+@Data
 @Table(name = "Pruebas")
 public class PruebaEntity {
     @Id
