@@ -15,6 +15,8 @@ public class PosicionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_VEHICULO")
     private VehiculoEntity vehiculo;

@@ -18,15 +18,21 @@ public class VehiculoEntity {
 
     private String patente;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MODELO")
     private ModeloEntity modelo;
 
     private Integer anio;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Set<PruebaEntity> pruebas;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Set<PosicionEntity> posiciones;
 

@@ -23,6 +23,8 @@ public class EmpleadoEntity {
     @Column(name = "telefono_contacto")
     private Integer telefonoContacto;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
     private Set<PruebaEntity> pruebas = new HashSet<>();
 

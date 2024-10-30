@@ -34,6 +34,8 @@ public class InteresadoEntity {
     @Column(name = "FECHA_VENCIMIENTO_LICENCIA")
     private Date fechaVtoLicencia;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "interesado", cascade = CascadeType.ALL)
     private Set<PruebaEntity> pruebas = new HashSet<>();
 

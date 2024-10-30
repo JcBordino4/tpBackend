@@ -15,12 +15,16 @@ public class ModeloEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MARCA")
     private MarcaEntity marca;
 
     private String descripcion;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "modelo", cascade = CascadeType.ALL)
     private Set<VehiculoEntity> vehiculos;
 

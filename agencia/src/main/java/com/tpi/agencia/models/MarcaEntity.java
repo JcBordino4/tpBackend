@@ -18,6 +18,8 @@ public class MarcaEntity {
 
     private String nombre;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
     private Set<ModeloEntity> modelos = new HashSet<>();
 
