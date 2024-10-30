@@ -28,4 +28,10 @@ public class ModeloEntity {
     @OneToMany(mappedBy = "modelo", cascade = CascadeType.PERSIST)
     private Set<VehiculoEntity> vehiculos;
 
+    public void setMarca(MarcaEntity marca) {
+        this.marca = marca;
+        if (marca != null) {
+            marca.getModelos().add(this);
+        }
+    }
 }

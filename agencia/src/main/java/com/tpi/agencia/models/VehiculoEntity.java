@@ -36,4 +36,10 @@ public class VehiculoEntity {
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.PERSIST)
     private Set<PosicionEntity> posiciones;
 
+    public void setModelo(ModeloEntity modelo) {
+        this.modelo = modelo;
+        if (modelo != null) {
+            modelo.getVehiculos().add(this);
+        }
+    }
 }

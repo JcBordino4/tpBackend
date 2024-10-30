@@ -28,4 +28,10 @@ public class PosicionEntity {
 
     private Double longitud;
 
+    public void setVehiculo(VehiculoEntity vehiculo) {
+        this.vehiculo = vehiculo;
+        if (vehiculo != null) {
+            vehiculo.getPosiciones().add(this);
+        }
+    }
 }
