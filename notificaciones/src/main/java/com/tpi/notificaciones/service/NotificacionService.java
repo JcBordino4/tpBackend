@@ -1,5 +1,6 @@
 package com.tpi.notificaciones.service;
 
+import com.tpi.notificaciones.dtos.NotificacionPromocionDto;
 import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.repositories.NotificacionPromocionRepository;
 import com.tpi.notificaciones.repositories.NotificacionRadioExcedidoRepository;
@@ -31,8 +32,9 @@ public class NotificacionService {
     }
 
     // Crear notificación de promoción
-    public NotificacionPromocionEntity createPromocion(NotificacionPromocionEntity promocion) {
-        return promocionRepository.save(promocion);
+    public NotificacionPromocionEntity createPromocion(NotificacionPromocionDto promocion) {
+        NotificacionPromocionEntity nuevaPromocion = buildNotificacionPromocionFromDto(promocion);
+        return promocionRepository.save(nuevaPromocion);
     }
 
     // Crear notificación de radio excedido
@@ -56,6 +58,16 @@ public class NotificacionService {
 
     public List<NotificacionZonaPeligrosaEntity> getAllZonasPeligrosas() {
         return (List<NotificacionZonaPeligrosaEntity>) zonaPeligrosaRepository.findAll();
+    }
+
+    private NotificacionPromocionEntity buildNotificacionPromocionFromDto(NotificacionPromocionDto promocionDto) {
+        NotificacionPromocionEntity promocion = new NotificacionPromocionEntity();
+        promocion.setId(promocionDto.getId());
+        promocion.setCodigoPromocion(promocionDto.getCodigoPromocion());
+        promocion.setFechaNotificacion(promocionDto.getFechaNotificacion());
+        promocion.setMensaje(promocionDto.getMensaje());
+        promocion.setFechaExpiracion(promocionDto.getFechaExpiracion());
+        return promocion;
     }
 
 }
