@@ -53,24 +53,51 @@ public class PruebaService {
         PruebaEntity existingPrueba = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
 
-        PruebaEntity updatedPrueba = buildPruebaFromDto(pruebaDto);
-        updatedPrueba.setId(id);
+        existingPrueba.setId(id);
+        existingPrueba.setFechaHoraInicio(pruebaDto.getFechaHoraInicio());
 
-        return repository.save(updatedPrueba);
-    }
-
-    private PruebaEntity buildPruebaFromDto(PruebaDto pruebaDto) {
-        // todos los vehiculos se asumen patentados por lo que no es necesario validar la patente
+        // actualizar relaciones
         VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getIdVehiculo())
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
-        if (repository.existsByVehiculoIdAndFechaHoraFinIsNull(vehiculo.getId())) {
-            throw new IllegalArgumentException("El vehículo está siendo probado.");
-        }
+        existingPrueba.setVehiculo(vehiculo);
+
         EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getIdEmpleado())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
+        existingPrueba.setEmpleado(empleado);
 
-        // validar el interesado
         InteresadoEntity interesado = interesadoRepository.findById(pruebaDto.getIdInteresado())
+                .orElseThrow(() -> new IllegalArgumentException("Interesado no encontrado"));
+        existingPrueba.setInteresado(interesado);
+
+        return repository.save(existingPrueba);
+    }
+
+    public PruebaEntity finalizarPrueba(Integer id, String comentario) {
+        PruebaEntity pruebaEnCurso = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
+
+        if (pruebaEnCurso.getFechaHoraFin() != null) {
+            throw new IllegalStateException("La prueba ya ha sido finalizada.");
+        }
+
+        pruebaEnCurso.setFechaHoraFin(new Date());
+        pruebaEnCurso.setComentarios(comentario);
+
+        return repository.save(pruebaEnCurso);
+    }
+
+    private VehiculoEntity validarVehiculoDisponible(Integer idVehiculo) {
+        VehiculoEntity vehiculo = vehiculoRepository.findById(idVehiculo)
+                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
+        // todos los vehiculos se asumen patentados por lo que no es necesario validar la patente
+        if (repository.existsByVehiculoIdAndFechaHoraFinIsNull(idVehiculo)) {
+            throw new IllegalArgumentException("El vehículo está siendo probado.");
+        }
+        return vehiculo;
+    }
+
+    private InteresadoEntity validarInteresado(Integer idInteresado) {
+        InteresadoEntity interesado = interesadoRepository.findById(idInteresado)
                 .orElseThrow(() -> new IllegalArgumentException("Interesado no encontrado"));
         if (interesado.getFechaVtoLicencia().before(new Date())) {
             throw new IllegalArgumentException("La licencia del interesado está vencida.");
@@ -78,6 +105,16 @@ public class PruebaService {
         if (interesado.getRestringido()) {
             throw new IllegalArgumentException("El interesado está restringido para probar vehículos.");
         }
+        return interesado;
+    }
+
+
+    private PruebaEntity buildPruebaFromDto(PruebaDto pruebaDto) {
+        VehiculoEntity vehiculo = validarVehiculoDisponible(pruebaDto.getIdVehiculo());
+        InteresadoEntity interesado = validarInteresado(pruebaDto.getIdInteresado());
+
+        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getIdEmpleado())
+                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
 
         PruebaEntity prueba = new PruebaEntity();
         prueba.setVehiculo(vehiculo);

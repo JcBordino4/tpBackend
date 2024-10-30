@@ -72,6 +72,16 @@ public class PruebaController {
         }
     }
 
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<?> finalizarPrueba(@PathVariable Integer id, @RequestBody String comentario) {
+        try {
+            PruebaEntity updatedPrueba = service.finalizarPrueba(id, comentario);
+            return ResponseEntity.ok(updatedPrueba);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     // borrar una prueba
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrueba(@PathVariable Integer id) {
