@@ -1,9 +1,12 @@
 package com.tpi.agencia.service;
 
+import com.tpi.agencia.dtos.PruebaDto;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.PruebaEntity;
+import com.tpi.agencia.models.VehiculoEntity;
 import com.tpi.agencia.repositories.PosicionesRepository;
 import com.tpi.agencia.repositories.PruebaRepository;
+import com.tpi.agencia.repositories.VehiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +17,13 @@ import java.util.List;
 public class ReporteService {
     private final PruebaRepository pruebaRepository;
     private final PosicionesRepository posicionesRepository;
+    private final VehiculoRepository vehiculoRepository;
 
     @Autowired
-    public ReporteService(PruebaRepository pruebaRepository, PosicionesRepository posicionesRepository) {
+    public ReporteService(PruebaRepository pruebaRepository, PosicionesRepository posicionesRepository, VehiculoRepository vehiculoRepository) {
         this.pruebaRepository = pruebaRepository;
         this.posicionesRepository = posicionesRepository;
+        this.vehiculoRepository = vehiculoRepository;
     }
 
     public Double calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
@@ -40,6 +45,13 @@ public class ReporteService {
         }
         return distanciaTotal;
     }
+
+    public List<PruebaDto> obtenerPruebasVehiculo(Integer idVehiculo) {
+        VehiculoEntity vehiculo = vehiculoRepository.findById(idVehiculo)
+                .orElseThrow(() -> new RuntimeException("Vehiculo no encontrado con ID: " + idVehiculo));
+        return vehiculo.getPruebas().stream().map(pruebaEntity -> new PruebaDto(pruebaEntity)).toList();
+    }
+
 
     private Double calcularDistanciaEuclidea(Double lat1, Double lon1, Double lat2, Double lon2) {
         Double dX = lat2 - lat1;
