@@ -63,9 +63,9 @@ public class PruebaService {
         // todos los vehiculos se asumen patentados por lo que no es necesario validar la patente
         VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getIdVehiculo())
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
-        //if (repository.existsByVehiculoIdAndFechaHoraFinIsNull(vehiculo.getId())) {
-        //    throw new IllegalArgumentException("El vehículo está siendo probado.");
-        //}
+        if (repository.existsByVehiculoIdAndFechaHoraFinIsNull(vehiculo.getId())) {
+            throw new IllegalArgumentException("El vehículo está siendo probado.");
+        }
         EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getIdEmpleado())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
 
