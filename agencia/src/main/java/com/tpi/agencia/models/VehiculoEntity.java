@@ -8,7 +8,7 @@ import org.springframework.boot.Banner;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter @Setter @NoArgsConstructor @ToString @AllArgsConstructor @EqualsAndHashCode
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 @Entity
 @Table(name = "Vehiculos")
 public class VehiculoEntity {
@@ -27,7 +27,7 @@ public class VehiculoEntity {
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Set<PruebaEntity> pruebas;
 
-    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Set<PosicionEntity> posiciones;
 
 }

@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Getter @Setter @NoArgsConstructor @ToString @AllArgsConstructor @EqualsAndHashCode
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 @Entity
 @Data
 @Table(name = "Pruebas")
@@ -32,8 +32,8 @@ public class PruebaEntity {
     private Date fechaHoraInicio;
 
     @Column(name = "FECHA_HORA_FIN")
-    private Date fechaHoraFin;
+    private Date fechaHoraFin = null;
 
-    private String comentarios;
+    private String comentarios = null;
 
 }
