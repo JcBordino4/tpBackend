@@ -1,5 +1,6 @@
 package com.tpi.agencia.controllers;
 
+import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
 import com.tpi.agencia.models.PruebaEntity;
 import com.tpi.agencia.service.PruebaService;
@@ -34,7 +35,12 @@ public class PruebaController {
             PruebaEntity found = service.findById(id);
             return ResponseEntity.ok(found);
         } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Not Found",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -57,7 +63,12 @@ public class PruebaController {
             PruebaEntity nuevaPrueba = service.create(prueba);
             return ResponseEntity.ok(nuevaPrueba);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -68,7 +79,12 @@ public class PruebaController {
             PruebaEntity updatedPrueba = service.updatePrueba(id, pruebaDto);
             return ResponseEntity.ok(updatedPrueba);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -78,7 +94,12 @@ public class PruebaController {
             PruebaEntity updatedPrueba = service.finalizarPrueba(id, pruebaDto.getComentarios());
             return ResponseEntity.ok(updatedPrueba);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
@@ -89,7 +110,12 @@ public class PruebaController {
             service.deletePrueba(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Not Found",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 

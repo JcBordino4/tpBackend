@@ -1,9 +1,11 @@
 package com.tpi.agencia.controllers;
 
+import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.service.ReporteService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,11 +38,19 @@ public class ReporteController {
             Double distancia = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
             return ResponseEntity.ok(distancia);
         } catch (ParseException e) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Bad Request", "message", "Error al parsear la fecha: " + e.getMessage()));
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    "Error al parsear la fecha: " + e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Bad Request", "message", "Error al calcular la distancia: " + e.getMessage()));
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    "Error al calcular la distancia: " + e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
