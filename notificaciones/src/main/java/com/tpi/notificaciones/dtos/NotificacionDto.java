@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 
 @Data
-public class NotificacionDto {
+public abstract class NotificacionDto {
     private Integer id;
     private LocalDateTime fechaNotificacion;
     private String mensaje;

@@ -2,9 +2,12 @@ package com.tpi.notificaciones.dtos;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class NotificacionRadioExcedidoDto {
+@EqualsAndHashCode(callSuper = true)
+
+public class NotificacionRadioExcedidoDto extends NotificacionDto{
     private double radioMaximo;
     private String ubicacionActual;
 }
