@@ -2,9 +2,11 @@ package com.tpi.agencia.dtos.report.responses;
 
 import com.tpi.agencia.dtos.VehiculoDto;
 import com.tpi.agencia.models.VehiculoEntity;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 public class DistanciaVehiculoResponse {
     private VehiculoDto vehiculo;
     private Date fechaDesde;
@@ -17,5 +19,7 @@ public class DistanciaVehiculoResponse {
         this.fechaHasta = fechaHasta;
         this.distanciaTotal = distanciaTotal;
     }
+
+
 }
 

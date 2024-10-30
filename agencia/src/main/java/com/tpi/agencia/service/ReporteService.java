@@ -1,6 +1,8 @@
 package com.tpi.agencia.service;
 
+import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
+import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.PruebaEntity;
 import com.tpi.agencia.models.VehiculoEntity;
@@ -8,6 +10,8 @@ import com.tpi.agencia.repositories.PosicionesRepository;
 import com.tpi.agencia.repositories.PruebaRepository;
 import com.tpi.agencia.repositories.VehiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,14 +30,15 @@ public class ReporteService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
-    public Double calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
+    public DistanciaVehiculoResponse calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
         // Obtener posiciones del vehiculo en el periodo dado
         List<PosicionEntity> posiciones = posicionesRepository.findByIdVehiculoAndFechaHoraBetween(idVehiculo, inicio, fin);
-
+        VehiculoEntity vehiculo = vehiculoRepository.findById(idVehiculo)
+                .orElseThrow(() -> new RuntimeException("Vehiculo no encontrado con ID: " + idVehiculo));
         Double distanciaTotal = 0.0;
 
         if (posiciones.isEmpty()) {
-            return 0.0;
+            DistanciaVehiculoResponse response = new DistanciaVehiculoResponse(vehiculo, inicio, fin, distanciaTotal);
         }
 
         for (int i = 0; i < posiciones.size() - 1; i++) {
@@ -43,7 +48,8 @@ public class ReporteService {
             // Calcular Distancia entre pos1 y pos2 usando distancia eclidea
             distanciaTotal += calcularDistanciaEuclidea(pos1.getLatitud(), pos1.getLongitud(), pos2.getLatitud(), pos2.getLongitud());
         }
-        return distanciaTotal;
+        DistanciaVehiculoResponse response = new DistanciaVehiculoResponse(vehiculo, inicio, fin, distanciaTotal);
+        return response;
     }
 
     public List<PruebaDto> obtenerPruebasVehiculo(Integer idVehiculo) {

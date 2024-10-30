@@ -2,6 +2,7 @@ package com.tpi.agencia.controllers;
 
 import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
+import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
 import com.tpi.agencia.dtos.report.responses.PruebasResponse;
 import com.tpi.agencia.service.ReporteService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class ReporteController {
         this.reporteService = reporteService;
     }
 
-    @GetMapping("/kilometros-vehiculo/{idVehiculo}")
-    public ResponseEntity<Object> getKilometrosVehiculo(
+    @GetMapping(value = "/kilometros-vehiculo/{idVehiculo}")
+    public ResponseEntity<?> getKilometrosVehiculo(
             @PathVariable Integer idVehiculo,
             @RequestParam("fechaDesde") String fechaDesde,
             @RequestParam("fechaHasta") String fechaHasta) {
@@ -36,8 +37,8 @@ public class ReporteController {
             Date desde = dateFormat.parse(fechaDesde);
             Date hasta = dateFormat.parse(fechaHasta);
 
-            Double distancia = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
-            return ResponseEntity.ok(distancia);
+            DistanciaVehiculoResponse response = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
+            return ResponseEntity.ok(response);
         } catch (ParseException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     HttpStatus.BAD_REQUEST.value(),
@@ -45,7 +46,8 @@ public class ReporteController {
                     "Error al parsear la fecha: " + e.getMessage()
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     HttpStatus.BAD_REQUEST.value(),
                     "Bad Request",
@@ -56,7 +58,7 @@ public class ReporteController {
     }
 
     @GetMapping("/detalle-pruebas/{idVehiculo}")
-    public ResponseEntity<Object> obtenerPruebasVehiculo(@PathVariable Integer idVehiculo) {
+    public ResponseEntity<?> obtenerPruebasVehiculo(@PathVariable Integer idVehiculo) {
         try {
             List<PruebaDto> pruebas = reporteService.obtenerPruebasVehiculo(idVehiculo);
             PruebasResponse response = new PruebasResponse(pruebas);
