@@ -1,6 +1,7 @@
 package com.tpi.notificaciones.controllers;
 
 
+import com.tpi.notificaciones.dtos.NotificacionPromocionDto;
 import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.service.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class NotificacionController {
 
     // Guardar notificacion de promocion
     @PostMapping("/promocion/new")
-    public ResponseEntity<NotificacionPromocionEntity> notificarPromocion(
-            @RequestBody NotificacionPromocionEntity promocion) {
+    public ResponseEntity<?> notificarPromocion(
+            @RequestBody NotificacionPromocionDto promocion) {
         return ResponseEntity.ok(notificacionService.createPromocion(promocion));
     }
 
