@@ -26,4 +26,5 @@ replay_pid*
 # others
 .idea
 *.mv.db
+*.trace.db
 /.idea/
