@@ -8,7 +8,7 @@ import org.springframework.boot.Banner;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString @EqualsAndHashCode
 @Entity
 @Table(name = "Vehiculos")
 public class VehiculoEntity {

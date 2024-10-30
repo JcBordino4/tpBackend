@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString @EqualsAndHashCode
 @Entity
 @Data
 @Table(name = "Pruebas")
