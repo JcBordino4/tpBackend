@@ -73,9 +73,9 @@ public class PruebaController {
     }
 
     @PutMapping("/finalizar/{id}")
-    public ResponseEntity<?> finalizarPrueba(@PathVariable Integer id, @RequestBody String comentario) {
+    public ResponseEntity<?> finalizarPrueba(@PathVariable Integer id, @RequestBody PruebaDto pruebaDto) {
         try {
-            PruebaEntity updatedPrueba = service.finalizarPrueba(id, comentario);
+            PruebaEntity updatedPrueba = service.finalizarPrueba(id, pruebaDto.getComentarios());
             return ResponseEntity.ok(updatedPrueba);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
