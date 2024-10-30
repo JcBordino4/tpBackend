@@ -2,6 +2,8 @@ package com.tpi.notificaciones.controllers;
 
 
 import com.tpi.notificaciones.dtos.NotificacionPromocionDto;
+import com.tpi.notificaciones.dtos.NotificacionRadioExcedidoDto;
+import com.tpi.notificaciones.dtos.NotificacionZonaPeligrosaDto;
 import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.service.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ public class NotificacionController {
 
     // Guardar notificacion por radio excedido
     @PostMapping("/seguridad/radio-excedido/new")
-    public ResponseEntity<NotificacionRadioExcedidoEntity> notificaRadioExcedido(
-            @RequestBody NotificacionRadioExcedidoEntity radioExcedido) {
+    public ResponseEntity<?> notificaRadioExcedido(
+            @RequestBody NotificacionRadioExcedidoDto radioExcedido) {
         return ResponseEntity.ok(notificacionService.createRadioExcedido(radioExcedido));
     }
 
@@ -35,8 +37,8 @@ public class NotificacionController {
 
     // Guardar notificacion por zona peligrosa
     @PostMapping("/seguridad/zona-peligrosa/new")
-    public ResponseEntity<NotificacionZonaPeligrosaEntity> notificarZonaPeligrosa(
-            @RequestBody NotificacionZonaPeligrosaEntity zonaPeligrosa) {
+    public ResponseEntity<?> notificarZonaPeligrosa(
+            @RequestBody NotificacionZonaPeligrosaDto zonaPeligrosa) {
         return ResponseEntity.ok(notificacionService.createZonaPeligrosa(zonaPeligrosa));
     }
 
