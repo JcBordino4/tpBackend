@@ -57,15 +57,15 @@ public class PruebaService {
         existingPrueba.setFechaHoraInicio(pruebaDto.getFechaHoraInicio());
 
         // actualizar relaciones
-        VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getIdVehiculo())
+        VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getVehiculoDto().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
         existingPrueba.setVehiculo(vehiculo);
 
-        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getIdEmpleado())
+        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleadoDto().getLegajo())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
         existingPrueba.setEmpleado(empleado);
 
-        InteresadoEntity interesado = interesadoRepository.findById(pruebaDto.getIdInteresado())
+        InteresadoEntity interesado = interesadoRepository.findById(pruebaDto.getInteresadoDto().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Interesado no encontrado"));
         existingPrueba.setInteresado(interesado);
 
@@ -110,10 +110,10 @@ public class PruebaService {
 
 
     private PruebaEntity buildPruebaFromDto(PruebaDto pruebaDto) {
-        VehiculoEntity vehiculo = validarVehiculoDisponible(pruebaDto.getIdVehiculo());
-        InteresadoEntity interesado = validarInteresado(pruebaDto.getIdInteresado());
+        VehiculoEntity vehiculo = validarVehiculoDisponible(pruebaDto.getVehiculoDto().getId());
+        InteresadoEntity interesado = validarInteresado(pruebaDto.getInteresadoDto().getId());
 
-        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getIdEmpleado())
+        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleadoDto().getLegajo())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
 
         PruebaEntity prueba = new PruebaEntity();
