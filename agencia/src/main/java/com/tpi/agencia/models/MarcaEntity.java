@@ -20,7 +20,7 @@ public class MarcaEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "marca", cascade = CascadeType.PERSIST)
     private Set<ModeloEntity> modelos = new HashSet<>();
 
 }

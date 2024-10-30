@@ -17,7 +17,7 @@ public class PosicionEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_VEHICULO")
     private VehiculoEntity vehiculo;
 

@@ -20,7 +20,7 @@ public class VehiculoEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MODELO")
     private ModeloEntity modelo;
 
@@ -28,12 +28,12 @@ public class VehiculoEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.PERSIST)
     private Set<PruebaEntity> pruebas;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.PERSIST)
     private Set<PosicionEntity> posiciones;
 
 }

@@ -17,7 +17,7 @@ public class ModeloEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MARCA")
     private MarcaEntity marca;
 
@@ -25,7 +25,7 @@ public class ModeloEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "modelo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "modelo", cascade = CascadeType.PERSIST)
     private Set<VehiculoEntity> vehiculos;
 
 }

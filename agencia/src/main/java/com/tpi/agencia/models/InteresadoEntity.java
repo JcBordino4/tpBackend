@@ -36,7 +36,7 @@ public class InteresadoEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "interesado", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "interesado", cascade = CascadeType.PERSIST)
     private Set<PruebaEntity> pruebas = new HashSet<>();
 
 }
