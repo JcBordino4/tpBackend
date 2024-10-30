@@ -1,42 +1,59 @@
 package com.tpi.notificaciones.controllers;
 
 
-import com.tpi.notificaciones.models.NotificacionEntity;
+import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.service.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/notificaciones")
 public class NotificacionController {
 
-    private final NotificacionService service;
+    private final NotificacionService notificacionService;
 
     @Autowired
-    public NotificacionController(NotificacionService service) {this.service = service;}
+    public NotificacionController(NotificacionService service) {this.notificacionService = service;}
 
-    // Notificar por radio excedido
-    @PostMapping("/seguridad/radio-excedido")
-    public ResponseEntity<NotificacionEntity> notificaRadioExcedido(
-            @RequestBody NotificacionEntity notificacion) {
-        return ResponseEntity.ok(service.notificar(notificacion));
+    // Guardar notificacion por radio excedido
+    @PostMapping("/seguridad/radio-excedido/new")
+    public ResponseEntity<NotificacionRadioExcedidoEntity> notificaRadioExcedido(
+            @RequestBody NotificacionRadioExcedidoEntity radioExcedido) {
+        return ResponseEntity.ok(notificacionService.createRadioExcedido(radioExcedido));
     }
 
-    // Notificar promocion
-    @PostMapping("/promocion")
-    public ResponseEntity<NotificacionEntity> notificarPromocion(
-            @RequestBody NotificacionEntity notificacion) {
-        return ResponseEntity.ok(service.notificar(notificacion));
+    // Guardar notificacion de promocion
+    @PostMapping("/promocion/new")
+    public ResponseEntity<NotificacionPromocionEntity> notificarPromocion(
+            @RequestBody NotificacionPromocionEntity promocion) {
+        return ResponseEntity.ok(notificacionService.createPromocion(promocion));
     }
 
-    // Notificar por zona peligrosa
-    @PostMapping("/seguridad/zona-peligrosa")
-    public ResponseEntity<NotificacionEntity> notificarZonaPeligrosa(
-            @RequestBody NotificacionEntity notificacion) {
-        return ResponseEntity.ok(service.notificar(notificacion));
+    // Guardar notificacion por zona peligrosa
+    @PostMapping("/seguridad/zona-peligrosa/new")
+    public ResponseEntity<NotificacionZonaPeligrosaEntity> notificarZonaPeligrosa(
+            @RequestBody NotificacionZonaPeligrosaEntity zonaPeligrosa) {
+        return ResponseEntity.ok(notificacionService.createZonaPeligrosa(zonaPeligrosa));
+    }
+
+    //Obtener notificacion de promocion
+    @GetMapping("/promocion")
+    public ResponseEntity<List<NotificacionPromocionEntity>> getAllPromociones() {
+        return ResponseEntity.ok(notificacionService.getAllPromociones());
+    }
+
+    //Obtener notificacion de radio excedido
+    @GetMapping("/seguridad/radio-excedido")
+    public ResponseEntity<List<NotificacionRadioExcedidoEntity>> getAllRadiosExcedidos() {
+        return ResponseEntity.ok(notificacionService.getAllRadiosExcedidos());
+    }
+
+    //Obtener notificacion de zona peligrosa
+    @GetMapping("/seguridad/zona-peligrosa")
+    public ResponseEntity<List<NotificacionZonaPeligrosaEntity>> getAllZonasPeligrosas() {
+        return ResponseEntity.ok(notificacionService.getAllZonasPeligrosas());
     }
 }
