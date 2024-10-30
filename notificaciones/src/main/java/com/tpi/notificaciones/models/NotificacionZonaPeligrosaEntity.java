@@ -1,8 +1,17 @@
 package com.tpi.notificaciones.models;
 
 import jakarta.persistence.Entity;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
 public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
@@ -27,20 +36,5 @@ public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
     public NotificacionZonaPeligrosaEntity() {
     }
 
-    // Getters and Setters
-    public String getZona() {
-        return zona;
-    }
 
-    public void setZona(String zona) {
-        this.zona = zona;
-    }
-
-    public String getNivelPeligro() {
-        return nivelPeligro;
-    }
-
-    public void setNivelPeligro(String nivelPeligro) {
-        this.nivelPeligro = nivelPeligro;
-    }
 }

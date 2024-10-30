@@ -1,8 +1,17 @@
 package com.tpi.notificaciones.models;
 
 import jakarta.persistence.Entity;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
 public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
@@ -27,20 +36,4 @@ public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
     public NotificacionRadioExcedidoEntity() {
     }
 
-    // Getters and Setters
-    public double getRadioMaximo() {
-        return radioMaximo;
-    }
-
-    public void setRadioMaximo(double radioMaximo) {
-        this.radioMaximo = radioMaximo;
-    }
-
-    public String getUbicacionActual() {
-        return ubicacionActual;
-    }
-
-    public void setUbicacionActual(String ubicacionActual) {
-        this.ubicacionActual = ubicacionActual;
-    }
 }
