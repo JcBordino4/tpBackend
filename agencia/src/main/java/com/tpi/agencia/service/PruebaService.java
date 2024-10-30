@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PruebaService {
@@ -30,26 +31,28 @@ public class PruebaService {
         this.interesadoRepository = interesadoRepository;
     }
 
-    public PruebaEntity create(PruebaDto prueba) {
+    public PruebaDto create(PruebaDto prueba) {
         PruebaEntity nuevaPrueba = buildPruebaFromDto(prueba);
-        return repository.save(nuevaPrueba);
+        PruebaEntity savedPrueba = repository.save(nuevaPrueba);
+        return new PruebaDto(savedPrueba);
     }
 
-    public PruebaEntity findById(Integer id) throws ServiceException {
-        return repository.findById(id).orElseThrow(() ->
+    public PruebaDto findById(Integer id) throws ServiceException {
+        return repository.findById(id).map(PruebaDto::new).orElseThrow(() ->
             new ServiceException("Prueba no encontrada")
         );
     }
 
-    public Iterable<PruebaEntity> findAll() {
-        return repository.findAll();
+    public Iterable<PruebaDto> findAll() {
+        Iterable<PruebaEntity> pruebas = repository.findAll();
+        return StreamSupport.stream(pruebas.spliterator(), false).map(PruebaDto::new).toList();
     }
 
-    public List<PruebaEntity> getPruebasEnCurso() {
-        return repository.findByFechaHoraFinIsNull();
+    public List<PruebaDto> getPruebasEnCurso() {
+        return repository.findByFechaHoraFinIsNull().stream().map(PruebaDto::new).toList();
     }
 
-    public PruebaEntity updatePrueba(Integer id, PruebaDto pruebaDto) {
+    public PruebaDto updatePrueba(Integer id, PruebaDto pruebaDto) {
         PruebaEntity existingPrueba = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
 
@@ -57,19 +60,21 @@ public class PruebaService {
         existingPrueba.setFechaHoraInicio(pruebaDto.getFechaHoraInicio());
 
         // actualizar relaciones
-        VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getVehiculoDto().getId())
+        VehiculoEntity vehiculo = vehiculoRepository.findById(pruebaDto.getVehiculo().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
         existingPrueba.setVehiculo(vehiculo);
 
-        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleadoDto().getLegajo())
+        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleado().getLegajo())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
         existingPrueba.setEmpleado(empleado);
 
-        InteresadoEntity interesado = interesadoRepository.findById(pruebaDto.getInteresadoDto().getId())
+        InteresadoEntity interesado = interesadoRepository.findById(pruebaDto.getInteresado().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Interesado no encontrado"));
         existingPrueba.setInteresado(interesado);
 
-        return repository.save(existingPrueba);
+        PruebaEntity updatedPrueba = repository.save(existingPrueba);
+
+        return new PruebaDto(updatedPrueba);
     }
 
     public PruebaEntity finalizarPrueba(Integer id, String comentario) {
@@ -110,10 +115,10 @@ public class PruebaService {
 
 
     private PruebaEntity buildPruebaFromDto(PruebaDto pruebaDto) {
-        VehiculoEntity vehiculo = validarVehiculoDisponible(pruebaDto.getVehiculoDto().getId());
-        InteresadoEntity interesado = validarInteresado(pruebaDto.getInteresadoDto().getId());
+        VehiculoEntity vehiculo = validarVehiculoDisponible(pruebaDto.getVehiculo().getId());
+        InteresadoEntity interesado = validarInteresado(pruebaDto.getInteresado().getId());
 
-        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleadoDto().getLegajo())
+        EmpleadoEntity empleado = empleadoRepository.findById(pruebaDto.getEmpleado().getLegajo())
                 .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
 
         PruebaEntity prueba = new PruebaEntity();

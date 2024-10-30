@@ -24,7 +24,7 @@ public class PruebaController {
 
     // Obtener todas las pruebas
     @GetMapping
-    public ResponseEntity<Iterable<PruebaEntity>> getAllPruebas() {
+    public ResponseEntity<Iterable<PruebaDto>> getAllPruebas() {
         return ResponseEntity.ok(service.findAll());
     }
 
@@ -32,7 +32,7 @@ public class PruebaController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPruebaById(@PathVariable Integer id) {
         try {
-            PruebaEntity found = service.findById(id);
+            PruebaDto found = service.findById(id);
             return ResponseEntity.ok(found);
         } catch (ServiceException e) {
             ErrorResponse errorResponse = new ErrorResponse(
@@ -46,8 +46,8 @@ public class PruebaController {
 
     // Obtener pruebas en curso
     @GetMapping("/en-curso")
-    public ResponseEntity<List<PruebaEntity>> getPruebasEnCurso() {
-        List<PruebaEntity> pruebas = service.getPruebasEnCurso();
+    public ResponseEntity<List<PruebaDto>> getPruebasEnCurso() {
+        List<PruebaDto> pruebas = service.getPruebasEnCurso();
 
         if (pruebas.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -60,7 +60,7 @@ public class PruebaController {
     @PostMapping("/new")
     public ResponseEntity<?> create(@RequestBody PruebaDto prueba) {
         try {
-            PruebaEntity nuevaPrueba = service.create(prueba);
+            PruebaDto nuevaPrueba = service.create(prueba);
             return ResponseEntity.ok(nuevaPrueba);
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
@@ -76,7 +76,7 @@ public class PruebaController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePrueba(@PathVariable Integer id, @RequestBody PruebaDto pruebaDto) {
         try {
-            PruebaEntity updatedPrueba = service.updatePrueba(id, pruebaDto);
+            PruebaDto updatedPrueba = service.updatePrueba(id, pruebaDto);
             return ResponseEntity.ok(updatedPrueba);
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
