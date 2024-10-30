@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,7 +25,7 @@ public class ReporteController {
     }
 
     @GetMapping("/kilometros-vehiculo/{idVehiculo}")
-    public ResponseEntity<Double> getKilometrosVehiculo(
+    public ResponseEntity<Object> getKilometrosVehiculo(
             @PathVariable Integer idVehiculo,
             @RequestParam("fechaDesde") String fechaDesde,
             @RequestParam("fechaHasta") String fechaHasta) {
@@ -35,14 +36,11 @@ public class ReporteController {
             Double distancia = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
             return ResponseEntity.ok(distancia);
         } catch (ParseException e) {
-            e.printStackTrace();
             return ResponseEntity.badRequest()
-                    .header("Error-Message", "Error al parsear la fecha: " + e.getMessage())
-                    .build();
+                    .body(Map.of("error", "Bad Request", "message", "Error al parsear la fecha: " + e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                    .header("Error-Message", "Error al calcular la distancia: " + e.getMessage())
-                    .build();
+                    .body(Map.of("error", "Bad Request", "message", "Error al calcular la distancia: " + e.getMessage()));
         }
     }
 

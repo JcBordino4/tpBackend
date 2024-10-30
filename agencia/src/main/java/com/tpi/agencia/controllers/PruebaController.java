@@ -39,7 +39,7 @@ public class PruebaController {
     }
 
     // crear una prueba
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<PruebaEntity> create(@RequestBody PruebaDto prueba) {
         PruebaEntity savedPrueba = service.create(prueba);
         return ResponseEntity.ok(savedPrueba);
