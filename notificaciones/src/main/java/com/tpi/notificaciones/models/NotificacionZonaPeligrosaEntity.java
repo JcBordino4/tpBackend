@@ -22,15 +22,17 @@ public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
     private Integer idPrueba;
 
     //Constructor
-    public NotificacionZonaPeligrosaEntity(String zona, String nivelPeligro) {
+    public NotificacionZonaPeligrosaEntity(String zona, String nivelPeligro, Integer idPrueba) {
         this.zona = zona;
         this.nivelPeligro = nivelPeligro;
+        this.idPrueba = idPrueba;
     }
 
-    public NotificacionZonaPeligrosaEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, String zona, String nivelPeligro) {
+    public NotificacionZonaPeligrosaEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, String zona, String nivelPeligro, Integer idPrueba) {
         super(id, fechaNotificacion, mensaje);
         this.zona = zona;
         this.nivelPeligro = nivelPeligro;
+        this.idPrueba = idPrueba;
     }
 
     public NotificacionZonaPeligrosaEntity() {

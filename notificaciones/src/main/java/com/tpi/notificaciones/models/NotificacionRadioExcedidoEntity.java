@@ -19,18 +19,20 @@ public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
     //Atributos
     private double radioMaximo;
     private String ubicacionActual;
-
+    private Integer idPrueba;
 
     //Constructor
-    public NotificacionRadioExcedidoEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, double radioMaximo, String ubicacionActual) {
+    public NotificacionRadioExcedidoEntity(double radioMaximo, String ubicacionActual, Integer idPrueba) {
+        this.radioMaximo = radioMaximo;
+        this.ubicacionActual = ubicacionActual;
+        this.idPrueba = idPrueba;
+    }
+
+    public NotificacionRadioExcedidoEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, double radioMaximo, String ubicacionActual, Integer idPrueba) {
         super(id, fechaNotificacion, mensaje);
         this.radioMaximo = radioMaximo;
         this.ubicacionActual = ubicacionActual;
-    }
-
-    public NotificacionRadioExcedidoEntity(double radioMaximo, String ubicacionActual) {
-        this.radioMaximo = radioMaximo;
-        this.ubicacionActual = ubicacionActual;
+        this.idPrueba = idPrueba;
     }
 
     public NotificacionRadioExcedidoEntity() {

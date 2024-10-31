@@ -16,7 +16,7 @@ public class NotificacionPromocionEntity extends NotificacionEntity {
     // Atributos
     private String codigoPromocion;
     private LocalDate fechaExpiracion;
-    private Integer idPrueba;
+
 
     // Constructor sin ID (para casos en los que no necesitas pasar el ID)
     public NotificacionPromocionEntity(String codigoPromocion, LocalDate fechaExpiracion) {

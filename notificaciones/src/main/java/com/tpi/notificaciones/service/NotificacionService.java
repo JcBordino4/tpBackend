@@ -83,6 +83,7 @@ public class NotificacionService {
         radioExcedido.setFechaNotificacion(radioDto.getFechaNotificacion());
         radioExcedido.setRadioMaximo(radioDto.getRadioMaximo());
         radioExcedido.setUbicacionActual(radioDto.getUbicacionActual());
+        radioExcedido.setIdPrueba(radioDto.getIdPrueba());
         return radioExcedido;
     }
 
@@ -93,6 +94,7 @@ public class NotificacionService {
         zonaPeligrosa.setFechaNotificacion(zonaDto.getFechaNotificacion());
         zonaPeligrosa.setZona(zonaDto.getZona());
         zonaPeligrosa.setNivelPeligro(zonaDto.getNivelPeligro());
+        zonaPeligrosa.setIdPrueba(zonaDto.getIdPrueba());
         return zonaPeligrosa;
     }
 }
