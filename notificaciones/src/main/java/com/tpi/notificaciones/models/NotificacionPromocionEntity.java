@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@NoArgsConstructor
 @Table(name = "NOTIFICACION_PROMOCION")
 public class NotificacionPromocionEntity extends NotificacionEntity {
 
@@ -33,7 +34,4 @@ public class NotificacionPromocionEntity extends NotificacionEntity {
         this.fechaExpiracion = fechaExpiracion;
     }
 
-    // Constructor sin argumentos (necesario para JPA)
-    public NotificacionPromocionEntity() {
-    }
 }

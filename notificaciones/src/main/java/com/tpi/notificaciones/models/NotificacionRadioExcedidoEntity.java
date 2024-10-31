@@ -2,10 +2,7 @@ package com.tpi.notificaciones.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-
+@NoArgsConstructor
 @Entity
 @Table(name = "NOTIFICACION_RADIO_EXCEDIDO")
 public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
@@ -36,8 +33,4 @@ public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
         this.ubicacionActual = ubicacionActual;
         this.idPrueba = idPrueba;
     }
-
-    public NotificacionRadioExcedidoEntity() {
-    }
-
 }
