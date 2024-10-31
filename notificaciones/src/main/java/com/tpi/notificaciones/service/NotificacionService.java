@@ -12,7 +12,6 @@ import com.tpi.notificaciones.repositories.NotificacionZonaPeligrosaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.StreamSupport;
 
 
@@ -58,12 +57,14 @@ public class NotificacionService {
         return StreamSupport.stream(promociones.spliterator(), false).map(NotificacionPromocionDto::new).toList();
     }
 
-    public List<NotificacionRadioExcedidoEntity> getAllRadiosExcedidos() {
-        return (List<NotificacionRadioExcedidoEntity>) radioExcedidoRepository.findAll();
+    public Iterable<NotificacionRadioExcedidoDto> getAllRadiosExcedidos() {
+        Iterable<NotificacionRadioExcedidoEntity> radios = radioExcedidoRepository.findAll();
+        return StreamSupport.stream(radios.spliterator(), false).map(NotificacionRadioExcedidoDto::new).toList();
     }
 
-    public List<NotificacionZonaPeligrosaEntity> getAllZonasPeligrosas() {
-        return (List<NotificacionZonaPeligrosaEntity>) zonaPeligrosaRepository.findAll();
+    public Iterable<NotificacionZonaPeligrosaDto> getAllZonasPeligrosas() {
+        Iterable<NotificacionZonaPeligrosaEntity> zonas = zonaPeligrosaRepository.findAll();
+        return StreamSupport.stream(zonas.spliterator(), false).map(NotificacionZonaPeligrosaDto::new).toList();
     }
 
     private NotificacionPromocionEntity buildNotificacionPromocionFromDto(NotificacionPromocionDto promocionDto) {

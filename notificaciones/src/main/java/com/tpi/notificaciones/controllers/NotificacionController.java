@@ -4,13 +4,12 @@ package com.tpi.notificaciones.controllers;
 import com.tpi.notificaciones.dtos.NotificacionPromocionDto;
 import com.tpi.notificaciones.dtos.NotificacionRadioExcedidoDto;
 import com.tpi.notificaciones.dtos.NotificacionZonaPeligrosaDto;
-import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.service.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/notificaciones")
@@ -50,13 +49,13 @@ public class NotificacionController {
 
     //Obtener notificacion de radio excedido
     @GetMapping("/seguridad/radio-excedido")
-    public ResponseEntity<List<NotificacionRadioExcedidoEntity>> getAllRadiosExcedidos() {
+    public ResponseEntity<?> getAllRadiosExcedidos() {
         return ResponseEntity.ok(notificacionService.getAllRadiosExcedidos());
     }
 
     //Obtener notificacion de zona peligrosa
     @GetMapping("/seguridad/zona-peligrosa")
-    public ResponseEntity<List<NotificacionZonaPeligrosaEntity>> getAllZonasPeligrosas() {
+    public ResponseEntity<?> getAllZonasPeligrosas() {
         return ResponseEntity.ok(notificacionService.getAllZonasPeligrosas());
     }
 }
