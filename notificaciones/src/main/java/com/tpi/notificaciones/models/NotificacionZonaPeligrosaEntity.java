@@ -19,7 +19,7 @@ public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
     //Atributos
     private String zona;
     private String nivelPeligro;
-
+    private Integer idPrueba;
 
     //Constructor
     public NotificacionZonaPeligrosaEntity(String zona, String nivelPeligro) {

@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 public class NotificacionZonaPeligrosaDto extends NotificacionDto{
     private String zona;
     private String nivelPeligro;
+    private Integer idPrueba;
 }

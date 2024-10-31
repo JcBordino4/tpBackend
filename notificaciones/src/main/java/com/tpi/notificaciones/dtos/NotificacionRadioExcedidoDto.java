@@ -10,4 +10,5 @@ import lombok.EqualsAndHashCode;
 public class NotificacionRadioExcedidoDto extends NotificacionDto{
     private double radioMaximo;
     private String ubicacionActual;
+    private Integer idPrueba;
 }
