@@ -1,6 +1,7 @@
 package com.tpi.notificaciones.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(name = "NOTIFICACION_PROMOCION")
 public class NotificacionPromocionEntity extends NotificacionEntity {
 
     // Atributos

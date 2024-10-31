@@ -1,6 +1,7 @@
 package com.tpi.notificaciones.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 
 @Entity
+@Table(name = "NOTIFICACION_ZONA_PELIGROSA")
 public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
 
     //Atributos
