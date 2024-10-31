@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 
 @Service
@@ -52,8 +53,9 @@ public class NotificacionService {
     }
 
     // Métodos para obtener todas las notificaciones de cada tipo
-    public List<NotificacionPromocionEntity> getAllPromociones() {
-        return (List<NotificacionPromocionEntity>) promocionRepository.findAll();
+    public Iterable<NotificacionPromocionDto> getAllPromociones() {
+        Iterable<NotificacionPromocionEntity> promociones =  promocionRepository.findAll();
+        return StreamSupport.stream(promociones.spliterator(), false).map(NotificacionPromocionDto::new).toList();
     }
 
     public List<NotificacionRadioExcedidoEntity> getAllRadiosExcedidos() {

@@ -44,7 +44,7 @@ public class NotificacionController {
 
     //Obtener notificacion de promocion
     @GetMapping("/promocion")
-    public ResponseEntity<List<NotificacionPromocionEntity>> getAllPromociones() {
+    public ResponseEntity<?> getAllPromociones() {
         return ResponseEntity.ok(notificacionService.getAllPromociones());
     }
 
