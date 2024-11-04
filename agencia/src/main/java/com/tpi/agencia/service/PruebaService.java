@@ -11,7 +11,6 @@ import com.tpi.agencia.repositories.PruebaRepository;
 import com.tpi.agencia.repositories.VehiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -77,18 +76,24 @@ public class PruebaService {
         return new PruebaDto(updatedPrueba);
     }
 
-    public PruebaEntity finalizarPrueba(Integer id, String comentario) {
+    public PruebaDto finalizarPrueba(Integer id, String comentario) {
         PruebaEntity pruebaEnCurso = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
 
         if (pruebaEnCurso.getFechaHoraFin() != null) {
-            throw new IllegalStateException("La prueba ya ha sido finalizada.");
+            throw new IllegalArgumentException("La prueba ya ha sido finalizada.");
         }
 
         pruebaEnCurso.setFechaHoraFin(new Date());
         pruebaEnCurso.setComentarios(comentario);
 
-        return repository.save(pruebaEnCurso);
+        return new PruebaDto(repository.save(pruebaEnCurso));
+    }
+
+    public void deletePrueba(Integer id) {
+        PruebaEntity existingPrueba = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
+        repository.delete(existingPrueba);
     }
 
     private VehiculoEntity validarVehiculoDisponible(Integer idVehiculo) {
@@ -128,12 +133,6 @@ public class PruebaService {
         prueba.setFechaHoraInicio(new Date());
 
         return prueba;
-    }
-
-    public void deletePrueba(Integer id) {
-        PruebaEntity existingPrueba = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Prueba no encontrada"));
-        repository.delete(existingPrueba);
     }
 
 }

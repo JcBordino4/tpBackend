@@ -2,7 +2,6 @@ package com.tpi.agencia.controllers;
 
 import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
-import com.tpi.agencia.models.PruebaEntity;
 import com.tpi.agencia.service.PruebaService;
 import com.tpi.agencia.service.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,7 @@ public class PruebaController {
     @PutMapping("/finalizar/{id}")
     public ResponseEntity<?> finalizarPrueba(@PathVariable Integer id, @RequestBody PruebaDto pruebaDto) {
         try {
-            PruebaEntity updatedPrueba = service.finalizarPrueba(id, pruebaDto.getComentarios());
+            PruebaDto updatedPrueba = service.finalizarPrueba(id, pruebaDto.getComentarios());
             return ResponseEntity.ok(updatedPrueba);
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
