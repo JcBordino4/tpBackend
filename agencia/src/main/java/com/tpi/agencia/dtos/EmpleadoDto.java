@@ -1,9 +1,11 @@
 package com.tpi.agencia.dtos;
 
 import com.tpi.agencia.models.EmpleadoEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class EmpleadoDto {
     private Integer legajo;
     private String nombre;

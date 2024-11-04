@@ -1,11 +1,13 @@
 package com.tpi.agencia.dtos;
 
 import com.tpi.agencia.models.InteresadoEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class InteresadoDto {
     private Integer id;
     private String tipoDocumento;
