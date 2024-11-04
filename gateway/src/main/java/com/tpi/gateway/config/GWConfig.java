@@ -49,7 +49,7 @@ public class GWConfig {
                         .pathMatchers("/api/v1/agencia/pruebas/new")
                         .hasRole("EMPLEADO")
 
-                        .pathMatchers("/api/v1/notificaciones/**")
+                        .pathMatchers("/api/v1/notificaciones/promocion")
                         .hasRole("EMPLEADO")
 
                         // Solo usuarios asociados a vehículos pueden enviar posiciones
