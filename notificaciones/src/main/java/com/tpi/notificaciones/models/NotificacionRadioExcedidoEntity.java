@@ -1,5 +1,6 @@
 package com.tpi.notificaciones.models;
 
+import com.tpi.notificaciones.dtos.PosicionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -16,21 +17,21 @@ import java.time.LocalDateTime;
 public class NotificacionRadioExcedidoEntity extends NotificacionEntity {
 
     //Atributos
-    private double radioMaximo;
-    private String ubicacionActual;
-    private Integer idPrueba;
+    private double latActual;
+    private double lonActual;
+    private Integer idVehiculo;
 
     //Constructor
-    public NotificacionRadioExcedidoEntity(double radioMaximo, String ubicacionActual, Integer idPrueba) {
-        this.radioMaximo = radioMaximo;
-        this.ubicacionActual = ubicacionActual;
-        this.idPrueba = idPrueba;
+    public NotificacionRadioExcedidoEntity(PosicionDto posicion, Integer idVehiculo) {
+        this.latActual = posicion.getCoordenadas().getLat();
+        this.lonActual = posicion.getCoordenadas().getLon();
+        this.idVehiculo = idVehiculo;
     }
 
-    public NotificacionRadioExcedidoEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, double radioMaximo, String ubicacionActual, Integer idPrueba) {
+    public NotificacionRadioExcedidoEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, PosicionDto posicion, Integer idVehiculo) {
         super(id, fechaNotificacion, mensaje);
-        this.radioMaximo = radioMaximo;
-        this.ubicacionActual = ubicacionActual;
-        this.idPrueba = idPrueba;
+        this.latActual = posicion.getCoordenadas().getLat();
+        this.lonActual = posicion.getCoordenadas().getLon();
+        this.idVehiculo = idVehiculo;
     }
 }

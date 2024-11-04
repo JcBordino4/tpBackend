@@ -1,5 +1,6 @@
 package com.tpi.notificaciones.models;
 
+import com.tpi.notificaciones.dtos.PosicionDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -17,21 +18,24 @@ import java.time.LocalDateTime;
 public class NotificacionZonaPeligrosaEntity extends NotificacionEntity {
 
     //Atributos
-    private String zona;
+    private double latActual;
+    private double lonActual;
     private String nivelPeligro;
-    private Integer idPrueba;
+    private Integer idVehiculo;
 
     //Constructor
-    public NotificacionZonaPeligrosaEntity(String zona, String nivelPeligro, Integer idPrueba) {
-        this.zona = zona;
+    public NotificacionZonaPeligrosaEntity(PosicionDto posicion, String nivelPeligro, Integer idVehiculo) {
+        this.latActual = posicion.getCoordenadas().getLat();
+        this.lonActual = posicion.getCoordenadas().getLon();
         this.nivelPeligro = nivelPeligro;
-        this.idPrueba = idPrueba;
+        this.idVehiculo = idVehiculo;
     }
 
-    public NotificacionZonaPeligrosaEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, String zona, String nivelPeligro, Integer idPrueba) {
+    public NotificacionZonaPeligrosaEntity(Integer id, LocalDateTime fechaNotificacion, String mensaje, PosicionDto posicion, String nivelPeligro, Integer idVehiculo) {
         super(id, fechaNotificacion, mensaje);
-        this.zona = zona;
+        this.latActual = posicion.getCoordenadas().getLat();
+        this.lonActual = posicion.getCoordenadas().getLon();
         this.nivelPeligro = nivelPeligro;
-        this.idPrueba = idPrueba;
+        this.idVehiculo = idVehiculo;
     }
 }

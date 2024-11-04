@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class NotificacionEntity {
 
     // Atributos

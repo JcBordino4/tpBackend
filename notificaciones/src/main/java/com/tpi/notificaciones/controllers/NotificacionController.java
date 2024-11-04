@@ -21,24 +21,24 @@ public class NotificacionController {
     public NotificacionController(NotificacionService service) {this.notificacionService = service;}
 
     // Guardar notificacion por radio excedido
-    @PostMapping("/seguridad/radio-excedido/new")
-    public ResponseEntity<?> notificaRadioExcedido(
-            @RequestBody NotificacionRadioExcedidoDto radioExcedido) {
-        return ResponseEntity.ok(notificacionService.createRadioExcedido(radioExcedido));
-    }
+    //    @PostMapping("/seguridad/radio-excedido/new")
+    //    public ResponseEntity<?> notificaRadioExcedido(
+    //            @RequestBody NotificacionRadioExcedidoDto radioExcedido) {
+    //        return ResponseEntity.ok(notificacionService.createRadioExcedido(radioExcedido));
+    //    }
+    //
+    //    // Guardar notificacion por zona peligrosa
+    //    @PostMapping("/seguridad/zona-peligrosa/new")
+    //    public ResponseEntity<?> notificarZonaPeligrosa(
+    //            @RequestBody NotificacionZonaPeligrosaDto zonaPeligrosa) {
+    //        return ResponseEntity.ok(notificacionService.createZonaPeligrosa(zonaPeligrosa));
+    //    }
 
     // Guardar notificacion de promocion
     @PostMapping("/promocion/new")
     public ResponseEntity<?> notificarPromocion(
             @RequestBody NotificacionPromocionDto promocion) {
         return ResponseEntity.ok(notificacionService.createPromocion(promocion));
-    }
-
-    // Guardar notificacion por zona peligrosa
-    @PostMapping("/seguridad/zona-peligrosa/new")
-    public ResponseEntity<?> notificarZonaPeligrosa(
-            @RequestBody NotificacionZonaPeligrosaDto zonaPeligrosa) {
-        return ResponseEntity.ok(notificacionService.createZonaPeligrosa(zonaPeligrosa));
     }
 
     //Obtener notificacion de promocion

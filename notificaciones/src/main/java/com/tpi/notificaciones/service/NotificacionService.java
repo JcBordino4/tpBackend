@@ -3,6 +3,7 @@ package com.tpi.notificaciones.service;
 import com.tpi.notificaciones.dtos.NotificacionPromocionDto;
 import com.tpi.notificaciones.dtos.NotificacionRadioExcedidoDto;
 import com.tpi.notificaciones.dtos.NotificacionZonaPeligrosaDto;
+import com.tpi.notificaciones.dtos.PosicionDto;
 import com.tpi.notificaciones.models.*;
 import com.tpi.notificaciones.repositories.NotificacionPromocionRepository;
 import com.tpi.notificaciones.repositories.NotificacionRadioExcedidoRepository;
@@ -12,6 +13,7 @@ import com.tpi.notificaciones.repositories.NotificacionZonaPeligrosaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.stream.StreamSupport;
 
 
@@ -40,14 +42,14 @@ public class NotificacionService {
     }
 
     // Crear notificación de radio excedido
-    public NotificacionRadioExcedidoEntity createRadioExcedido(NotificacionRadioExcedidoDto radioExcedido) {
-        NotificacionRadioExcedidoEntity nuevoRadioExcedido = buildNotificacionRadioExcedidoFromDto(radioExcedido);
+    public NotificacionRadioExcedidoEntity createRadioExcedido(PosicionDto posicion) {
+        NotificacionRadioExcedidoEntity nuevoRadioExcedido = buildNotificacionRadioExcedidoFromDto(posicion);
         return radioExcedidoRepository.save(nuevoRadioExcedido);
     }
 
     // Crear notificación de zona peligrosa
-    public NotificacionZonaPeligrosaEntity createZonaPeligrosa(NotificacionZonaPeligrosaDto zonaPeligrosa) {
-        NotificacionZonaPeligrosaEntity nuevaZonaPeligrosa = buildNotificacionZonaPeligrosaFromDto(zonaPeligrosa);
+    public NotificacionZonaPeligrosaEntity createZonaPeligrosa(PosicionDto posicion) {
+        NotificacionZonaPeligrosaEntity nuevaZonaPeligrosa = buildNotificacionZonaPeligrosaFromDto(posicion);
         return zonaPeligrosaRepository.save(nuevaZonaPeligrosa);
     }
 
@@ -69,7 +71,6 @@ public class NotificacionService {
 
     private NotificacionPromocionEntity buildNotificacionPromocionFromDto(NotificacionPromocionDto promocionDto) {
         NotificacionPromocionEntity promocion = new NotificacionPromocionEntity();
-        promocion.setId(promocionDto.getId());
         promocion.setCodigoPromocion(promocionDto.getCodigoPromocion());
         promocion.setFechaNotificacion(promocionDto.getFechaNotificacion());
         promocion.setMensaje(promocionDto.getMensaje());
@@ -77,25 +78,24 @@ public class NotificacionService {
         return promocion;
     }
 
-    private NotificacionRadioExcedidoEntity buildNotificacionRadioExcedidoFromDto(NotificacionRadioExcedidoDto radioDto) {
+    private NotificacionRadioExcedidoEntity buildNotificacionRadioExcedidoFromDto(PosicionDto posicion) {
         NotificacionRadioExcedidoEntity radioExcedido = new NotificacionRadioExcedidoEntity();
-        radioExcedido.setId(radioDto.getId());
-        radioExcedido.setMensaje(radioDto.getMensaje());
-        radioExcedido.setFechaNotificacion(radioDto.getFechaNotificacion());
-        radioExcedido.setRadioMaximo(radioDto.getRadioMaximo());
-        radioExcedido.setUbicacionActual(radioDto.getUbicacionActual());
-        radioExcedido.setIdPrueba(radioDto.getIdPrueba());
+        radioExcedido.setFechaNotificacion(LocalDateTime.now());
+        radioExcedido.setLatActual(posicion.getCoordenadas().getLat());
+        radioExcedido.setLonActual(posicion.getCoordenadas().getLon());
+        radioExcedido.setIdVehiculo(posicion.getVehiculo().getId());
+        radioExcedido.setMensaje(posicion.getMensaje());
         return radioExcedido;
     }
 
-    private NotificacionZonaPeligrosaEntity buildNotificacionZonaPeligrosaFromDto(NotificacionZonaPeligrosaDto zonaDto) {
+    private NotificacionZonaPeligrosaEntity buildNotificacionZonaPeligrosaFromDto(PosicionDto posicion) {
         NotificacionZonaPeligrosaEntity zonaPeligrosa = new NotificacionZonaPeligrosaEntity();
-        zonaPeligrosa.setId(zonaDto.getId());
-        zonaPeligrosa.setMensaje(zonaDto.getMensaje());
-        zonaPeligrosa.setFechaNotificacion(zonaDto.getFechaNotificacion());
-        zonaPeligrosa.setZona(zonaDto.getZona());
-        zonaPeligrosa.setNivelPeligro(zonaDto.getNivelPeligro());
-        zonaPeligrosa.setIdPrueba(zonaDto.getIdPrueba());
+        zonaPeligrosa.setFechaNotificacion(LocalDateTime.now());
+        zonaPeligrosa.setNivelPeligro("ALTO");
+        zonaPeligrosa.setLatActual(posicion.getCoordenadas().getLat());
+        zonaPeligrosa.setLonActual(posicion.getCoordenadas().getLon());
+        zonaPeligrosa.setIdVehiculo(posicion.getVehiculo().getId());
+        zonaPeligrosa.setMensaje(posicion.getMensaje());
         return zonaPeligrosa;
     }
 }

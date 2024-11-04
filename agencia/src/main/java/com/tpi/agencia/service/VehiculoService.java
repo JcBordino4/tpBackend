@@ -18,13 +18,15 @@ public class VehiculoService {
     private final VehiculoRepository vehiculoRepository;
     private final PruebaRepository pruebaRepository;
     private final PosicionRepository posicionRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Autowired
-    public VehiculoService(RestriccionesService restriccionesService, VehiculoRepository vehiculoRepository, PruebaRepository pruebaRepository, PosicionRepository posicionRepository) {
+    public VehiculoService(RestriccionesService restriccionesService, VehiculoRepository vehiculoRepository, PruebaRepository pruebaRepository, PosicionRepository posicionRepository, KafkaProducer kafkaProducer) {
         this.restriccionesService = restriccionesService;
         this.vehiculoRepository = vehiculoRepository;
         this.pruebaRepository = pruebaRepository;
         this.posicionRepository = posicionRepository;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public PosicionDto procesarPosicion(PosicionDto posicionDto){
@@ -46,12 +48,14 @@ public class VehiculoService {
         if (estaPosicionFueraRadioAdmitido(posicionRespuesta, restricciones)){
             posicionRespuesta.setMensaje("La posicion actual del vehiculo se encuentra por fuera del radio permitido por la agencia.");
             // trigger notification.
+            kafkaProducer.enviarMensajeRadioExcedido(posicionRespuesta);
             return posicionRespuesta;
         }
 
         if (estaEnZonaRestringida(posicionRespuesta, restricciones)){
             posicionRespuesta.setMensaje("La posicion actual del vehiculo se encuentra dentro de un area restringida.");
             // trigger notification.
+            kafkaProducer.enviarMensajeZonaPeligrosa(posicionRespuesta);
             return posicionRespuesta;
         }
 

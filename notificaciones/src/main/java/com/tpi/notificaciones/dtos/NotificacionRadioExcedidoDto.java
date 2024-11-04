@@ -9,14 +9,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 
 public class NotificacionRadioExcedidoDto extends NotificacionDto{
-    private double radioMaximo;
-    private String ubicacionActual;
-    private Integer idPrueba;
+    private double latActual;
+    private double lonActual;
+    private Integer idVehiculo;
 
     public NotificacionRadioExcedidoDto(NotificacionRadioExcedidoEntity notificacion) {
         super(notificacion.getId(), notificacion.getFechaNotificacion(), notificacion.getMensaje());
-        this.radioMaximo = notificacion.getRadioMaximo();
-        this.ubicacionActual = notificacion.getUbicacionActual();
-        this.idPrueba = notificacion.getIdPrueba();
+        this.latActual = notificacion.getLatActual();
+        this.lonActual = notificacion.getLonActual();
+        this.idVehiculo = notificacion.getIdVehiculo();
     }
 }

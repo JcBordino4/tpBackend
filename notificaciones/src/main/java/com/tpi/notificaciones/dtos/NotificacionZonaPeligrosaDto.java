@@ -9,14 +9,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 
 public class NotificacionZonaPeligrosaDto extends NotificacionDto{
-    private String zona;
+    private double latActual;
+    private double lonActual;
     private String nivelPeligro;
-    private Integer idPrueba;
+    private Integer idVehiculo;
+
 
     public NotificacionZonaPeligrosaDto(NotificacionZonaPeligrosaEntity notificacion) {
         super(notificacion.getId(), notificacion.getFechaNotificacion(), notificacion.getMensaje());
-        this.zona = notificacion.getZona();
+        this.latActual = notificacion.getLatActual();
+        this.lonActual = notificacion.getLonActual();
         this.nivelPeligro = notificacion.getNivelPeligro();
-        this.idPrueba = notificacion.getIdPrueba();
+        this.idVehiculo = notificacion.getIdVehiculo();
     }
 }
