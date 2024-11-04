@@ -23,16 +23,18 @@ public class NotificacionService {
     private final NotificacionPromocionRepository promocionRepository;
     private final NotificacionRadioExcedidoRepository radioExcedidoRepository;
     private final NotificacionZonaPeligrosaRepository zonaPeligrosaRepository;
+    private final TwilioSmsService smsService;
 
     @Autowired
     public NotificacionService(
             NotificacionPromocionRepository promocionRepository,
             NotificacionRadioExcedidoRepository radioExcedidoRepository,
-            NotificacionZonaPeligrosaRepository zonaPeligrosaRepository) {
-
+            NotificacionZonaPeligrosaRepository zonaPeligrosaRepository,
+            TwilioSmsService smsService) {
         this.promocionRepository = promocionRepository;
         this.radioExcedidoRepository = radioExcedidoRepository;
         this.zonaPeligrosaRepository = zonaPeligrosaRepository;
+        this.smsService = smsService;
     }
 
     // Crear notificación de promoción
@@ -44,12 +46,20 @@ public class NotificacionService {
     // Crear notificación de radio excedido
     public NotificacionRadioExcedidoEntity createRadioExcedido(PosicionDto posicion) {
         NotificacionRadioExcedidoEntity nuevoRadioExcedido = buildNotificacionRadioExcedidoFromDto(posicion);
+        smsService.sendSmsToMultipleRecipients("ALERTA: El vehiculo Matricula: " + posicion.getVehiculo().getPatente().toUpperCase() +
+                " excedio el radio maximo autorizado de la agencia durante la prueba actual. La ultima posicion registrada es: " +
+                posicion.getCoordenadas().getLat() + " LAT, "
+                + posicion.getCoordenadas().getLon() + " LON.");
         return radioExcedidoRepository.save(nuevoRadioExcedido);
     }
 
     // Crear notificación de zona peligrosa
     public NotificacionZonaPeligrosaEntity createZonaPeligrosa(PosicionDto posicion) {
         NotificacionZonaPeligrosaEntity nuevaZonaPeligrosa = buildNotificacionZonaPeligrosaFromDto(posicion);
+        smsService.sendSmsToMultipleRecipients("ALERTA: El vehiculo Matricula: " + posicion.getVehiculo().getPatente().toUpperCase() +
+                " ingreso a una zona peligrosa(area restringida) de riesgo ALTO durante la prueba actual. La ultima posicion registrada es: " +
+                posicion.getCoordenadas().getLat() + " LAT, "
+                + posicion.getCoordenadas().getLon() + " LON.");
         return zonaPeligrosaRepository.save(nuevaZonaPeligrosa);
     }
 
