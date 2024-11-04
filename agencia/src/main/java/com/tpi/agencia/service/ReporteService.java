@@ -1,17 +1,14 @@
 package com.tpi.agencia.service;
 
-import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
 import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.PruebaEntity;
 import com.tpi.agencia.models.VehiculoEntity;
-import com.tpi.agencia.repositories.PosicionesRepository;
+import com.tpi.agencia.repositories.PosicionRepository;
 import com.tpi.agencia.repositories.PruebaRepository;
 import com.tpi.agencia.repositories.VehiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,19 +17,19 @@ import java.util.List;
 @Service
 public class ReporteService {
     private final PruebaRepository pruebaRepository;
-    private final PosicionesRepository posicionesRepository;
+    private final PosicionRepository posicionRepository;
     private final VehiculoRepository vehiculoRepository;
 
     @Autowired
-    public ReporteService(PruebaRepository pruebaRepository, PosicionesRepository posicionesRepository, VehiculoRepository vehiculoRepository) {
+    public ReporteService(PruebaRepository pruebaRepository, PosicionRepository posicionRepository, VehiculoRepository vehiculoRepository) {
         this.pruebaRepository = pruebaRepository;
-        this.posicionesRepository = posicionesRepository;
+        this.posicionRepository = posicionRepository;
         this.vehiculoRepository = vehiculoRepository;
     }
 
     public DistanciaVehiculoResponse calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
         // Obtener posiciones del vehiculo en el periodo dado
-        List<PosicionEntity> posiciones = posicionesRepository.findByIdVehiculoAndFechaHoraBetween(idVehiculo, inicio, fin);
+        List<PosicionEntity> posiciones = posicionRepository.findByIdVehiculoAndFechaHoraBetween(idVehiculo, inicio, fin);
         VehiculoEntity vehiculo = vehiculoRepository.findById(idVehiculo)
                 .orElseThrow(() -> new RuntimeException("Vehiculo no encontrado con ID: " + idVehiculo));
         Double distanciaTotal = 0.0;
