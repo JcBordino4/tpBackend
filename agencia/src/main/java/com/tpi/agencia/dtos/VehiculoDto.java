@@ -2,9 +2,11 @@ package com.tpi.agencia.dtos;
 
 import com.tpi.agencia.models.ModeloEntity;
 import com.tpi.agencia.models.VehiculoEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class VehiculoDto {
     private Integer id;
     private String patente;
