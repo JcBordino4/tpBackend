@@ -89,4 +89,19 @@ public class ReporteController {
         }
     }
 
+    @GetMapping("/incidentes/{idEmpleado}")
+    public ResponseEntity<?> obtenerIncidentesEmpleado(@PathVariable Integer idEmpleado) {
+        try {
+            List<PruebaDto> pruebas = reporteService.obtenerIncidentesEmpleado(idEmpleado);
+            return ResponseEntity.ok(pruebas);
+        } catch (RuntimeException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    "Error al obtener el reporte de incidentes del empleado con el ID: " + idEmpleado + " " +  e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
 }

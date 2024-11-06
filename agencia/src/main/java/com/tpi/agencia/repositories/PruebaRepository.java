@@ -24,4 +24,13 @@ public interface PruebaRepository extends CrudRepository<PruebaEntity, Integer> 
             @Param("vehiculoId") Integer vehiculoId,
             @Param("fechaNotificacion") LocalDateTime fechaNotificacion);
 
+    @Query("SELECT p FROM PruebaEntity p WHERE p.vehiculo.id = :vehiculoId " +
+            "AND p.empleado.legajo = :idEmpleado " +
+            "AND (p.fechaHoraFin IS NULL AND :fechaNotificacion BETWEEN p.fechaHoraInicio AND CURRENT_TIMESTAMP " +
+            "OR :fechaNotificacion BETWEEN p.fechaHoraInicio AND p.fechaHoraFin)")
+    PruebaEntity findPruebaByVehiculoIdAndFechaNotificacionAndEmpleado(
+            @Param("vehiculoId") Integer vehiculoId,
+            @Param("fechaNotificacion") LocalDateTime fechaNotificacion,
+            @Param("idEmpleado") Integer idEmpleado);
+
 }

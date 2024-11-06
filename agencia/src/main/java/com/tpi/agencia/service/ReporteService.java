@@ -76,10 +76,20 @@ public class ReporteService {
     }
 
     private PruebaDto buscarPruebaDeNotificacion(NotificacionRadioExcedidoDto notificacion) {
-        System.out.println(notificacion.getIdVehiculo());
-        System.out.println(notificacion.getFechaNotificacion());
         PruebaEntity prueba = pruebaRepository.findPruebaByVehiculoIdAndFechaNotificacion(notificacion.getIdVehiculo(), notificacion.getFechaNotificacion());
-        System.out.println(prueba);
+        return new PruebaDto(prueba);
+    }
+
+    public List<PruebaDto> obtenerIncidentesEmpleado(Integer idEmpleado) {
+        List<NotificacionRadioExcedidoDto> notificaciones = externalApisService.getNotificacionesRadioExcedido();
+
+        return notificaciones.stream()
+                .map(notificacion -> buscarPruebaDeNotificacionEmpleado(notificacion, idEmpleado))
+                .collect(Collectors.toList());
+    }
+
+    private PruebaDto buscarPruebaDeNotificacionEmpleado(NotificacionRadioExcedidoDto notificacion, Integer idEmpleado) {
+        PruebaEntity prueba = pruebaRepository.findPruebaByVehiculoIdAndFechaNotificacionAndEmpleado(notificacion.getIdVehiculo(), notificacion.getFechaNotificacion(), idEmpleado);
         return new PruebaDto(prueba);
     }
 
