@@ -78,7 +78,7 @@ public class ReporteService {
     private PruebaDto buscarPruebaDeNotificacion(NotificacionRadioExcedidoDto notificacion) {
         System.out.println(notificacion.getIdVehiculo());
         System.out.println(notificacion.getFechaNotificacion());
-        PruebaEntity prueba = pruebaRepository.findPruebaByVehiculoIdAndFechaNotificacionBetween(notificacion.getIdVehiculo(), notificacion.getFechaNotificacion());
+        PruebaEntity prueba = pruebaRepository.findPruebaByVehiculoIdAndFechaNotificacion(notificacion.getIdVehiculo(), notificacion.getFechaNotificacion());
         System.out.println(prueba);
         return new PruebaDto(prueba);
     }
