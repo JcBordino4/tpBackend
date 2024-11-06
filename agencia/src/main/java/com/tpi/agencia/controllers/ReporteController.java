@@ -4,6 +4,7 @@ import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
 import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
 import com.tpi.agencia.dtos.report.responses.PruebasResponse;
+import com.tpi.agencia.service.ExternalApisService;
 import com.tpi.agencia.service.ReporteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ReporteController {
     private final ReporteService reporteService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
-    public ReporteController(ReporteService service, ReporteService reporteService) { this.service = service;
+    public ReporteController(ReporteService service, ReporteService reporteService, ExternalApisService externalApisService) { this.service = service;
         this.reporteService = reporteService;
     }
 
@@ -68,6 +69,21 @@ public class ReporteController {
                     HttpStatus.BAD_REQUEST.value(),
                     "Bad Request",
                     e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/incidentes")
+    public ResponseEntity<?> obtenerIncidentes() {
+        try {
+            List<PruebaDto> pruebas = reporteService.obtenerIncidentes();
+            return ResponseEntity.ok(pruebas);
+        } catch (RuntimeException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    "Error al obtener el reporte de incidentes" + e.getMessage()
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }

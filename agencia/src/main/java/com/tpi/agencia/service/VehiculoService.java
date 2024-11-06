@@ -1,7 +1,7 @@
 package com.tpi.agencia.service;
 
 import com.tpi.agencia.dtos.PosicionDto;
-import com.tpi.agencia.dtos.RestriccionesDto;
+import com.tpi.agencia.dtos.externos.RestriccionesDto;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.VehiculoEntity;
 import com.tpi.agencia.repositories.PosicionRepository;
@@ -14,15 +14,15 @@ import java.util.Date;
 
 @Service
 public class VehiculoService {
-    private final RestriccionesService restriccionesService;
+    private final ExternalApisService externalApisService;
     private final VehiculoRepository vehiculoRepository;
     private final PruebaRepository pruebaRepository;
     private final PosicionRepository posicionRepository;
     private final KafkaProducer kafkaProducer;
 
     @Autowired
-    public VehiculoService(RestriccionesService restriccionesService, VehiculoRepository vehiculoRepository, PruebaRepository pruebaRepository, PosicionRepository posicionRepository, KafkaProducer kafkaProducer) {
-        this.restriccionesService = restriccionesService;
+    public VehiculoService(ExternalApisService externalApisService, VehiculoRepository vehiculoRepository, PruebaRepository pruebaRepository, PosicionRepository posicionRepository, KafkaProducer kafkaProducer) {
+        this.externalApisService = externalApisService;
         this.vehiculoRepository = vehiculoRepository;
         this.pruebaRepository = pruebaRepository;
         this.posicionRepository = posicionRepository;
@@ -30,7 +30,7 @@ public class VehiculoService {
     }
 
     public PosicionDto procesarPosicion(PosicionDto posicionDto){
-        RestriccionesDto restricciones = restriccionesService.getRestricciones();
+        RestriccionesDto restricciones = externalApisService.getRestricciones();
 
         if (restricciones == null) {
             throw new IllegalStateException("No se pudieron obtener las restricciones."); // Manejo de error adecuado

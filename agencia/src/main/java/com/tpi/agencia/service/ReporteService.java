@@ -1,6 +1,8 @@
 package com.tpi.agencia.service;
 
 import com.tpi.agencia.dtos.PruebaDto;
+import com.tpi.agencia.dtos.externos.NotificacionDto;
+import com.tpi.agencia.dtos.externos.NotificacionRadioExcedidoDto;
 import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.PruebaEntity;
@@ -13,18 +15,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReporteService {
     private final PruebaRepository pruebaRepository;
     private final PosicionRepository posicionRepository;
     private final VehiculoRepository vehiculoRepository;
+    private final ExternalApisService externalApisService;
 
     @Autowired
-    public ReporteService(PruebaRepository pruebaRepository, PosicionRepository posicionRepository, VehiculoRepository vehiculoRepository) {
+    public ReporteService(PruebaRepository pruebaRepository, PosicionRepository posicionRepository, VehiculoRepository vehiculoRepository, ExternalApisService externalApisService) {
         this.pruebaRepository = pruebaRepository;
         this.posicionRepository = posicionRepository;
         this.vehiculoRepository = vehiculoRepository;
+        this.externalApisService = externalApisService;
     }
 
     public DistanciaVehiculoResponse calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
@@ -61,6 +66,22 @@ public class ReporteService {
         Double dY = lon2 - lon2;
         return Math.sqrt(dX * dX + dY * dY);
     }
+
+    public List<PruebaDto> obtenerIncidentes() {
+        List<NotificacionRadioExcedidoDto> notificaciones = externalApisService.getNotificacionesRadioExcedido();
+
+        return notificaciones.stream()
+                .map(this::buscarPruebaDeNotificacion)
+                .collect(Collectors.toList());
+    }
+
+    private PruebaDto buscarPruebaDeNotificacion(NotificacionRadioExcedidoDto notificacion) {
+        PruebaEntity prueba = pruebaRepository.findPruebaByVehiculoIdAndFechaNotificacionBetween(notificacion.getIdVehiculo(), notificacion.getFechaNotificacion());
+        return new PruebaDto(prueba);
+    }
+
+
+
 
     public Iterable<PruebaEntity> getAll() { return pruebaRepository.findAll(); }
 
