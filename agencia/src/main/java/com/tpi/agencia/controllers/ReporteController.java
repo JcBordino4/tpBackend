@@ -83,7 +83,7 @@ public class ReporteController {
             ErrorResponse errorResponse = new ErrorResponse(
                     HttpStatus.BAD_REQUEST.value(),
                     "Bad Request",
-                    "Error al obtener el reporte de incidentes" + e.getMessage()
+                    "Error al obtener el reporte de incidentes: " + e.getMessage()
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }

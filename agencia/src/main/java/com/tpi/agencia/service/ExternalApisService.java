@@ -27,7 +27,7 @@ public class ExternalApisService {
     }
 
     public List<NotificacionRadioExcedidoDto> getNotificacionesRadioExcedido() {
-        NotificacionRadioExcedidoDto[] notificacionesArray = restTemplate.getForObject(urlNotificaciones, NotificacionRadioExcedidoDto[].class);
+        NotificacionRadioExcedidoDto[] notificacionesArray = restTemplate.getForObject(urlNotificaciones + "/notificaciones/seguridad/radio-excedido", NotificacionRadioExcedidoDto[].class);
         return Arrays.asList(notificacionesArray);
     }
 
