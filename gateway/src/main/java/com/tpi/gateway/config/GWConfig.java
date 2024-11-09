@@ -28,19 +28,23 @@ public class GWConfig {
 
         // Registra las rutas que usa para redireccioanr las peticiones a los microservicios especificos.
         return builder.routes()
-                // Ruteo al Microservicio de Agencia
-                .route(p -> p.path("/api/v1/agencia/**").uri(uriAgencia))
-                // Ruteo al Microservicio de Notificaciones
-                .route(p -> p.path("/api/v1/notificaciones/**").uri(uriNotificaciones))
+                .route(p -> p
+                        .path("/api/v1/agencia/**")
+                        .filters(f -> f.stripPrefix(3))  // Quita los primeros tres segmentos (api, v1 y agencia porque en el microservicio las rutas no lo tienen)
+                        .uri(uriAgencia))
+                .route(p -> p
+                        .path("/api/v1/notificaciones/**")
+                        .filters(f -> f.stripPrefix(3))
+                        .uri(uriNotificaciones))
                 .build();
     }
 
-    /* Aca se definen las politicas de acceso que requieren los diferentes endopoints.
+    /*
+       Aca se definen las politicas de acceso que requieren los diferentes endopoints.
         1. Unicamente un empleado puede acceder a crear pruebas y mandar notificaciones.
         2. Unicamente un usuario asociado a un vehiculo puede enviar posiciones.
         3. Unicamnete un administrador puede ver los datos de los reportes
-     */
-
+    */
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
         http.authorizeExchange(exchanges -> exchanges
@@ -54,19 +58,11 @@ public class GWConfig {
 
                         // Solo usuarios asociados a vehículos pueden enviar posiciones
                         .pathMatchers("/api/v1/agencia/pruebas/posicion")
-                        .hasRole("USUARIO")
+                        .hasRole("VEHICULO")
 
                         // Solo administradores pueden ver reportes
                         .pathMatchers("/api/v1/agencia/reportes/**")
-                        .hasRole("ADMINISTRADOR")
-
-                        // Rutas de pruebas accesibles para cualquiera
-                        .pathMatchers("/api/v1/agencia/pruebas/**")
-                        .permitAll()
-
-                        // Cualquier otra petición específica de agencia accesible para todos
-                        .pathMatchers("/api/v1/agencia/**")
-                        .permitAll()
+                        .hasRole("ADMIN")
 
                         // Para cualquier peticion hace falta estar autenticado.
                         .anyExchange()
