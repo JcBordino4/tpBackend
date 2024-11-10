@@ -2,7 +2,9 @@ package com.tpi.agencia.controllers;
 
 import com.tpi.agencia.dtos.ErrorResponse;
 import com.tpi.agencia.dtos.PruebaDto;
-import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
+import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoReportResponse;
+import com.tpi.agencia.dtos.report.responses.IncidentesResponse;
+import com.tpi.agencia.dtos.report.responses.IncidentesXEmpleado;
 import com.tpi.agencia.dtos.report.responses.PruebasResponse;
 import com.tpi.agencia.service.ExternalApisService;
 import com.tpi.agencia.service.ReporteService;
@@ -21,11 +23,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/reportes")
 public class ReporteController {
-    private final ReporteService service;
     private final ReporteService reporteService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
-    public ReporteController(ReporteService service, ReporteService reporteService, ExternalApisService externalApisService) { this.service = service;
+    public ReporteController(ReporteService reporteService, ExternalApisService externalApisService) {
         this.reporteService = reporteService;
     }
 
@@ -38,7 +40,7 @@ public class ReporteController {
             Date desde = dateFormat.parse(fechaDesde);
             Date hasta = dateFormat.parse(fechaHasta);
 
-            DistanciaVehiculoResponse response = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
+            DistanciaVehiculoReportResponse response = reporteService.calcularDistanciaRecorrida(idVehiculo, desde, hasta);
             return ResponseEntity.ok(response);
         } catch (ParseException e) {
             ErrorResponse errorResponse = new ErrorResponse(
@@ -62,7 +64,7 @@ public class ReporteController {
     public ResponseEntity<?> obtenerPruebasVehiculo(@PathVariable Integer idVehiculo) {
         try {
             List<PruebaDto> pruebas = reporteService.obtenerPruebasVehiculo(idVehiculo);
-            PruebasResponse response = new PruebasResponse(pruebas);
+            PruebasResponse response = new PruebasResponse("Reporte de Pruebas por Vehiculo", "Reporte de pruebas para un vehiculo en especifico.", pruebas);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ErrorResponse errorResponse = new ErrorResponse(
@@ -78,7 +80,8 @@ public class ReporteController {
     public ResponseEntity<?> obtenerIncidentes() {
         try {
             List<PruebaDto> pruebas = reporteService.obtenerIncidentes();
-            return ResponseEntity.ok(pruebas);
+            IncidentesResponse response = new IncidentesResponse(pruebas);
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     HttpStatus.BAD_REQUEST.value(),
@@ -93,7 +96,8 @@ public class ReporteController {
     public ResponseEntity<?> obtenerIncidentesEmpleado(@PathVariable Integer idEmpleado) {
         try {
             List<PruebaDto> pruebas = reporteService.obtenerIncidentesEmpleado(idEmpleado);
-            return ResponseEntity.ok(pruebas);
+            IncidentesXEmpleado response = new IncidentesXEmpleado(idEmpleado, pruebas);
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     HttpStatus.BAD_REQUEST.value(),

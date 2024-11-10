@@ -1,9 +1,8 @@
 package com.tpi.agencia.service;
 
 import com.tpi.agencia.dtos.PruebaDto;
-import com.tpi.agencia.dtos.externos.NotificacionDto;
 import com.tpi.agencia.dtos.externos.NotificacionRadioExcedidoDto;
-import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoResponse;
+import com.tpi.agencia.dtos.report.responses.DistanciaVehiculoReportResponse;
 import com.tpi.agencia.models.PosicionEntity;
 import com.tpi.agencia.models.PruebaEntity;
 import com.tpi.agencia.models.VehiculoEntity;
@@ -32,7 +31,7 @@ public class ReporteService {
         this.externalApisService = externalApisService;
     }
 
-    public DistanciaVehiculoResponse calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
+    public DistanciaVehiculoReportResponse calcularDistanciaRecorrida(Integer idVehiculo, Date inicio, Date fin) {
         // Obtener posiciones del vehiculo en el periodo dado
         List<PosicionEntity> posiciones = posicionRepository.findByIdVehiculoAndFechaHoraBetween(idVehiculo, inicio, fin);
         VehiculoEntity vehiculo = vehiculoRepository.findById(idVehiculo)
@@ -40,7 +39,7 @@ public class ReporteService {
         Double distanciaTotal = 0.0;
 
         if (posiciones.isEmpty()) {
-            DistanciaVehiculoResponse response = new DistanciaVehiculoResponse(vehiculo, inicio, fin, distanciaTotal);
+            DistanciaVehiculoReportResponse response = new DistanciaVehiculoReportResponse(vehiculo, inicio, fin, distanciaTotal);
         }
 
         for (int i = 0; i < posiciones.size() - 1; i++) {
@@ -50,7 +49,7 @@ public class ReporteService {
             // Calcular Distancia entre pos1 y pos2 usando distancia eclidea
             distanciaTotal += calcularDistanciaEuclidea(pos1.getLatitud(), pos1.getLongitud(), pos2.getLatitud(), pos2.getLongitud());
         }
-        DistanciaVehiculoResponse response = new DistanciaVehiculoResponse(vehiculo, inicio, fin, distanciaTotal);
+        DistanciaVehiculoReportResponse response = new DistanciaVehiculoReportResponse(vehiculo, inicio, fin, distanciaTotal);
         return response;
     }
 
