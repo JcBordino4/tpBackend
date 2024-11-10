@@ -1,4 +1,54 @@
-# Trabajo Practico - Backend de Aplicaciones
-Trabajo Practico del Grupo N124 de la materia Backend de Aplicaciones.
-#### Agencia de Autos - Año 2024
-- Este repositorio contiene los proyectos de SprinBoot que constituyen un backend de microservicios para la aplicacion.
+# Trabajo Práctico - Backend de Aplicaciones
+Trabajo Práctico del Grupo N124 de la materia Backend de Aplicaciones.
+### Agencia de Autos - Año 2024
+- Este repositorio contiene los proyectos de Spring Boot que constituyen un backend de microservicios para la aplicación.
+- Los servicios se disponen mediante una API Gateway que corre por defecto en el puerto 8090.
+#### Rutas disponibles (se debe agregar el prefijo /api/v1)
+- Servicio ***"Agencia"*** (/agencia)
+    - Vehículos
+        - <code style="color : gold">POST</code> /vehiculos/posicion/new
+    - Pruebas
+        - <code style="color : greenyellow">GET</code> /pruebas
+        - <code style="color : greenyellow">GET</code> /pruebas/:idPrueba
+        - <code style="color : gold">POST</code> /pruebas/new
+        - <code style="color : lightskyblue">PUT</code> /pruebas/finalizar/:idPrueba
+        - <code style="color : orangered">DELETE</code> /pruebas/:idPrueba
+    - Reportes
+        - <code style="color : greenyellow">GET</code> /reportes/incidentes
+        - <code style="color : greenyellow">GET</code> /reportes/incidentes/:idEmpleado
+        - <code style="color : greenyellow">GET</code> /reportes/kilometros-vehiculo/:idVehiculo?fechaDesde={value}&fechaHasta={value}
+        - <code style="color : greenyellow">GET</code> /reportes/detalle-pruebas/:idVehiculo
+- Servicio ***"Notificaciones"*** (/notificaciones)
+    - Críticas
+        - <code style="color : greenyellow">GET</code> /notificaciones/seguridad/radio-excedido
+        - <code style="color : greenyellow">GET</code> /notificaciones/seguridad/zona-peligrosa
+    - Promociones
+        - <code style="color : gold">POST</code> /notificaciones/promocion
+        - <code style="color : greenyellow">GET</code> /notificaciones/promocion
+
+### Extras
+#### Notificaciones SMS
+Decidimos investigar sobre el envío de Notificaciones por SMS e implementamos una solución que utiliza la API de Twilio (líder en la industria para este tipo de necesidades) para notificar a los usuarios registrados (por el momento, una lista de números telefónicos que se configuran en una variable de entorno) de algún suceso.
+<br>
+La integración es muy sencilla, ya que Twilio provee un SDK que maneja todos los detalles, y nosotros solo solicitamos que se envíe un mensaje específico.
+<br>
+Utilizamos un plan gratuito de prueba que es apto para nuestras necesidades y que se puede actualizar fácilmente.
+#### Comunicación entre Microservicios
+Quisimos indagar más profundamente en este aspecto y consideramos que el caso de la comunicación entre el servicio de Agencia y el de Notificaciones, que sucede cuando se registra una posición de vehículo (que esté fuera de norma) y se debe generar una notificación, sería el **caso ideal para probar Apache Kafka** como tecnología de streaming de eventos en vez de un simple <code style="color : gold">POST</code> entre ambos microservicios, lo cual generaría un alto acoplamiento y sería totalmente bloqueante para el servicio de Agencia.
+<br>
+Al utilizar una tecnología como Kafka, el microservicio de Agencia se desliga totalmente de la responsabilidad del envío de notificaciones, que queda por completo delegada al servicio de Notificaciones.
+<br>
+El flujo es el siguiente:
+1. Se recibe un POST para actualizar la posición del vehículo en el servicio de Agencia.
+2. Se registra en la BD.
+3. Se verifica si la posición infringe alguna restricción (obtenida de un web service externo).
+    - Si -NO- se viola ninguna restricción:
+        1. Fin del proceso.
+    - Si -SÍ- se viola una restricción:
+        1. El servicio de Agencia (publisher) publica un mensaje de Kafka en un tópico específico dependiendo del tipo de violación (área restringida o radio excedido).
+        2. El servicio de Notificaciones (consumer) recibe el mensaje en alguno de los dos tópicos.
+        3. El servicio de Notificaciones dispara el envío de la notificación por SMS y registra la notificación en la BD.
+
+##### <u>Flujo estándar para el registro de una posición y su posterior notificación</u>
+![Flujo kafka](https://raw.githubusercontent.com/JcBordino4/tpBackend/refs/heads/master/kafka.png)
+Para implementar esta solución utilizamos un Broker de Kafka en la nube llamado _RedPanda_ que ofrece una tarifa gratuita de prueba y que satisface perfectamente nuestros requerimientos.
