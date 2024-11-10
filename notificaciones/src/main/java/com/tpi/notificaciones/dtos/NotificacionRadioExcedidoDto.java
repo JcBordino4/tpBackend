@@ -14,7 +14,7 @@ public class NotificacionRadioExcedidoDto extends NotificacionDto{
     private Integer idVehiculo;
 
     public NotificacionRadioExcedidoDto(NotificacionRadioExcedidoEntity notificacion) {
-        super(notificacion.getId(), notificacion.getFechaNotificacion(), notificacion.getMensaje());
+        super(notificacion.getId(), notificacion.getMensaje());
         this.latActual = notificacion.getLatActual();
         this.lonActual = notificacion.getLonActual();
         this.idVehiculo = notificacion.getIdVehiculo();

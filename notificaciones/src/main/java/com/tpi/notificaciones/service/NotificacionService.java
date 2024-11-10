@@ -40,27 +40,29 @@ public class NotificacionService {
     // Crear notificación de promoción
     public NotificacionPromocionEntity createPromocion(NotificacionPromocionDto promocion) {
         NotificacionPromocionEntity nuevaPromocion = buildNotificacionPromocionFromDto(promocion);
+        smsService.sendSmsToMultipleRecipients("PROMOCION: " + nuevaPromocion.getMensaje() + " Valido hasta el " + nuevaPromocion.getFechaExpiracion() +
+                " usando el CODIGO: " + nuevaPromocion.getCodigoPromocion());
         return promocionRepository.save(nuevaPromocion);
     }
 
     // Crear notificación de radio excedido
-    public NotificacionRadioExcedidoEntity createRadioExcedido(PosicionDto posicion) {
+    public void createRadioExcedido(PosicionDto posicion) {
         NotificacionRadioExcedidoEntity nuevoRadioExcedido = buildNotificacionRadioExcedidoFromDto(posicion);
         smsService.sendSmsToMultipleRecipients("ALERTA: El vehiculo Matricula: " + posicion.getVehiculo().getPatente().toUpperCase() +
                 " excedio el radio maximo autorizado de la agencia durante la prueba actual. La ultima posicion registrada es: " +
                 posicion.getCoordenadas().getLat() + " LAT, "
                 + posicion.getCoordenadas().getLon() + " LON.");
-        return radioExcedidoRepository.save(nuevoRadioExcedido);
+        radioExcedidoRepository.save(nuevoRadioExcedido);
     }
 
     // Crear notificación de zona peligrosa
-    public NotificacionZonaPeligrosaEntity createZonaPeligrosa(PosicionDto posicion) {
+    public void createZonaPeligrosa(PosicionDto posicion) {
         NotificacionZonaPeligrosaEntity nuevaZonaPeligrosa = buildNotificacionZonaPeligrosaFromDto(posicion);
         smsService.sendSmsToMultipleRecipients("ALERTA: El vehiculo Matricula: " + posicion.getVehiculo().getPatente().toUpperCase() +
                 " ingreso a una zona peligrosa(area restringida) de riesgo ALTO durante la prueba actual. La ultima posicion registrada es: " +
                 posicion.getCoordenadas().getLat() + " LAT, "
                 + posicion.getCoordenadas().getLon() + " LON.");
-        return zonaPeligrosaRepository.save(nuevaZonaPeligrosa);
+        zonaPeligrosaRepository.save(nuevaZonaPeligrosa);
     }
 
     // Métodos para obtener todas las notificaciones de cada tipo
@@ -81,8 +83,8 @@ public class NotificacionService {
 
     private NotificacionPromocionEntity buildNotificacionPromocionFromDto(NotificacionPromocionDto promocionDto) {
         NotificacionPromocionEntity promocion = new NotificacionPromocionEntity();
+        promocion.setFechaNotificacion(LocalDateTime.now());
         promocion.setCodigoPromocion(promocionDto.getCodigoPromocion());
-        promocion.setFechaNotificacion(promocionDto.getFechaNotificacion());
         promocion.setMensaje(promocionDto.getMensaje());
         promocion.setFechaExpiracion(promocionDto.getFechaExpiracion());
         return promocion;

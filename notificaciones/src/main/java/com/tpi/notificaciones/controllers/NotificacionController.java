@@ -20,6 +20,8 @@ public class NotificacionController {
     @Autowired
     public NotificacionController(NotificacionService service) {this.notificacionService = service;}
 
+    // Estos endpoitns no son necesarios porque las notificaciones se generan por el Consumer de Kafka.
+
     // Guardar notificacion por radio excedido
     //    @PostMapping("/seguridad/radio-excedido/new")
     //    public ResponseEntity<?> notificaRadioExcedido(
