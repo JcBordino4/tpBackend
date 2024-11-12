@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/reportes")
 public class ReporteController {
